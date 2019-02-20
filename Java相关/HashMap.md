@@ -15,13 +15,16 @@
 
 > 感谢 [changfubai](https://github.com/changfubai) 对本文的改进做出的贡献！
 
-## HashMap 简介
-HashMap 主要用来存放键值对，它基于哈希表的Map接口实现</font>，是常用的Java集合之一。 
+# HashMap 简介
+
+HashMap 主要用来存放键值对，它基于哈希表的Map接口实现，是常用的Java集合之一。
 
 JDK1.8 之前 HashMap 由 数组+链表 组成的，数组是 HashMap 的主体，链表则是主要为了解决哈希冲突而存在的（“拉链法”解决冲突）.JDK1.8 以后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）时，将链表转化为红黑树，以减少搜索时间。
 
 ## 底层数据结构分析
+
 ### JDK1.8之前
+
 JDK1.8 之前 HashMap 底层是 **数组和链表** 结合在一起使用也就是 **链表散列**。**HashMap 通过 key 的 hashCode 经过扰动函数处理过后得到 hash  值，然后通过 `(n - 1) & hash` 判断当前元素存放的位置（这里的 n 指的是数组的长度），如果当前位置存在元素的话，就判断该元素与要存入的元素的 hash 值以及 key 是否相同，如果相同的话，直接覆盖，不相同就通过拉链法解决冲突。**
 
 **所谓扰动函数指的就是 HashMap 的 hash 方法。使用 hash 方法也就是扰动函数是为了防止一些实现比较差的 hashCode() 方法 换句话说使用扰动函数之后可以减少碰撞。**
@@ -59,29 +62,31 @@ static int hash(int h) {
 ![jdk1.8之前的内部结构](https://user-gold-cdn.xitu.io/2018/3/20/16240dbcc303d872?w=348&h=427&f=png&s=10991)
 
 ### JDK1.8之后
+
 相比于之前的版本，jdk1.8在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为8）时，将链表转化为红黑树，以减少搜索时间。
 
 ![JDK1.8之后的HashMap底层数据结构](http://my-blog-to-use.oss-cn-beijing.aliyuncs.com/18-8-22/67233764.jpg)
 
-**类的属性：**
+#### 类的属性
+
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
     // 序列号
-    private static final long serialVersionUID = 362498820763181265L;    
+    private static final long serialVersionUID = 362498820763181265L;
     // 默认的初始容量是16
-    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;   
+    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
     // 最大容量
-    static final int MAXIMUM_CAPACITY = 1 << 30; 
+    static final int MAXIMUM_CAPACITY = 1 << 30;
     // 默认的填充因子
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
     // 当桶(bucket)上的结点数大于这个值时会转成红黑树
-    static final int TREEIFY_THRESHOLD = 8; 
+    static final int TREEIFY_THRESHOLD = 8;
     // 当桶(bucket)上的结点数小于这个值时树转链表
     static final int UNTREEIFY_THRESHOLD = 6;
     // 桶中结构转化为红黑树对应的table的最小大小
     static final int MIN_TREEIFY_CAPACITY = 64;
     // 存储元素的数组，总是2的幂次倍
-    transient Node<k,v>[] table; 
+    transient Node<k,v>[] table;
     // 存放具体元素的集
     transient Set<map.entry<k,v>> entrySet;
     // 存放元素的个数，注意这个不等于数组的长度。
@@ -94,11 +99,12 @@ public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneabl
     final float loadFactor;
 }
 ```
+
 - **loadFactor加载因子**
 
   loadFactor加载因子是控制数组存放数据的疏密程度，loadFactor越趋近于1，那么   数组中存放的数据(entry)也就越多，也就越密，也就是会让链表的长度增加，load   Factor越小，也就是趋近于0，
 
-  **loadFactor太大导致查找元素效率低，太小导致数组的利用率低，存放的数据会很分散。loadFactor的默认值为0.75f是官方给出的一个比较好的临界值**。 
+  **loadFactor太大导致查找元素效率低，太小导致数组的利用率低，存放的数据会很分散。loadFactor的默认值为0.75f是官方给出的一个比较好的临界值**。
   
   给定的默认容量为 16，负载因子为 0.75。Map 在使用过程中不断的往里面存放数据，当数量达到了 16 * 0.75 = 12 就需要将当前 16 的容量进行扩容，而扩容这个过程涉及到 rehash、复制数据等操作，所以非常消耗性能。
 
@@ -149,7 +155,9 @@ static class Node<K,V> implements Map.Entry<K,V> {
         }
 }
 ```
+
 **树节点类源码:**
+
 ```java
 static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
         TreeNode<K,V> parent;  // 父
@@ -168,8 +176,11 @@ static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
                 r = p;
        }
 ```
+
 ## HashMap源码分析
+
 ### 构造方法
+
 ![四个构造方法](https://user-gold-cdn.xitu.io/2018/3/20/162410d912a2e0e1?w=336&h=90&f=jpeg&s=26744)
 ```java
     // 默认构造函数。
