@@ -76,7 +76,8 @@ Hashtable和HashMap有几个主要的不同：线程安全以及速度。仅在�
 **==与equals的区别**
 
 1. ==是判断两个变量或实例是不是指向同一个内存空间    equals是判断两个变量或实例所指向的内存空间的值是不是相同
-2. ==是指对内存地址进行比较    equals()是对字符串的内容进行比较3.==指引用是否相同    equals()指的是值是否相同
+2. ==是指对内存地址进行比较    equals()是对字符串的内容进行比较
+3. ==指引用是否相同    equals()指的是值是否相同
 
 ## <font face="楷体">comparable 和 comparator的区别</font>
 - comparable接口实际上是出自java.lang包 它有一个 compareTo(Object obj)方法用来排序
@@ -315,7 +316,7 @@ public class MethodDemo {
 
 ## <font face="楷体">集合框架底层数据结构总结</font>
 ### - Collection
-  
+
 ####  1. List
    - Arraylist：数组（查询快,增删慢   线程不安全,效率高  ）
    - Vector：数组（查询快,增删慢 线程安全,效率低  ）
@@ -331,7 +332,7 @@ public class MethodDemo {
  -  LinkedHashMap:HashMap  的基础上加上了链表数据结构
  -  HashTable:哈希表
  -  TreeMap:红黑树（自平衡的排序二叉树）
- 
+
 
 ## <font face="楷体">集合的选用</font>
 主要根据集合的特点来选用，比如我们需要根据键值获取到元素值时就选用Map接口下的集合，需要排序时选择TreeMap,不需要排序时就选择HashMap,需要保证线程安全就选用ConcurrentHashMap.当我们只需要存放元素值时，就选择实现Collection接口的集合，需要保证元素唯一时选择实现Set接口的集合比如TreeSet或HashSet，不需要就选择实现List接口的比如ArrayList或LinkedList，然后再根据实现这些接口的集合的特点来选用。
@@ -347,6 +348,6 @@ public class MethodDemo {
 《Head first java 》第二版 推荐阅读真心不错 （适合基础较差的）
 
  《Java核心技术卷1》推荐阅读真心不错 （适合基础较好的）
- 
+
  《算法》第四版 （适合想对数据结构的Java实现感兴趣的）
- 
+

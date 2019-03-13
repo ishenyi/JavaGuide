@@ -1,3 +1,5 @@
+# 看美团的这个就够了：https://zhuanlan.zhihu.com/p/21673805
+
 <!-- MarkdownTOC -->
 
 - [HashMap 简介](#hashmap-简介)
@@ -16,6 +18,10 @@
 > 感谢 [changfubai](https://github.com/changfubai) 对本文的改进做出的贡献！
 
 # HashMap 简介
+
+
+
+
 
 HashMap 主要用来存放键值对，它基于哈希表的Map接口实现，是常用的Java集合之一。
 
